@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: storyboard_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: storyboard_db
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    container_name: storyboard_backend
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
