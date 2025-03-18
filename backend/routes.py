@@ -35,3 +35,11 @@ def create_storyboard(storyboard: StoryboardCreate, db: Session = Depends(get_db
 router.get("/storyboards", response_model=List[StoryboardResponse])
 def get_storyboards(db: Session = Depends(get_db)):
     return db.query(Storyboard).all()
+
+# Get single storyboard by ID
+@router.get("/storyboards/{id}", response_model=StoryboardResponse)
+def get_storyboard(id: int, db: Session = Depends(get_db)):
+    storyboard = db.query(Storyboard).filter(Storyboard.id == id).first()
+    if not storyboard:
+        raise HTTPException(status_code=404, detail="Storyboard not found")
+    return storyboard
