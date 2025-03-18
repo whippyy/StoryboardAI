@@ -43,3 +43,13 @@ def get_storyboard(id: int, db: Session = Depends(get_db)):
     if not storyboard:
         raise HTTPException(status_code=404, detail="Storyboard not found")
     return storyboard
+
+# Delete a storyboard
+@router.delete("/storyboards/{id}")
+def delete_storyboard(id: int, db: Session = Depends(get_db)):
+    storyboard = db.query(Storyboard).filter(Storyboard.id == id).first()
+    if not storyboard:
+        raise HTTPException(status_code=404, detail="Storyboard not found")
+    db.delete(storyboard)
+    db.commit()
+    return {"message": "Storyboard deleted"}
