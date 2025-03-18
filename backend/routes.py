@@ -30,3 +30,8 @@ def create_storyboard(storyboard: StoryboardCreate, db: Session = Depends(get_db
     db.commit()
     db.refresh(new_storyboard)
     return new_storyboard
+
+# Get all storyboard
+router.get("/storyboards", response_model=List[StoryboardResponse])
+def get_storyboards(db: Session = Depends(get_db)):
+    return db.query(Storyboard).all()
